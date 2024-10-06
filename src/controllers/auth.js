@@ -79,55 +79,114 @@ export const register = async (req, res) => {
 
 
 
-export const login = async (req, res) => {
-  try { 
-      const { userName, password } = req.body;
+// export const login = async (req, res) => {
+//   try { 
+//       const { userName, password } = req.body;
 
-      // Check if username is provided
-      if (!userName) {
-          return res.status(404).json({ success: false, message: 'Username is required' });
-      }
+//       // Check if username is provided
+//       if (!userName) {
+//           return res.status(404).json({ success: false, message: 'Username is required' });
+//       }
 
-      // Check if password is provided
-      if (!password) {
-          return res.status(404).json({ success: false, message: 'Password is required' });
-      }
+//       // Check if password is provided
+//       if (!password) {
+//           return res.status(404).json({ success: false, message: 'Password is required' });
+//       }
 
-      // Find user by username
-      const user = await User.findOne({ userName });
-      if (!user) {
-          return res.status(404).json({ success: false, message: 'User not found' });
-      }
+//       // Find user by username
+//       const user = await User.findOne({ userName });
+//       if (!user) {
+//           return res.status(404).json({ success: false, message: 'User not found' });
+//       }
 
-      console.log(user);
+//     //   console.log(user);
       
+//       const isMatch = await comparePassword(password, user.password);
+//       if (!isMatch) {
+//           return res.status(400).json({ success: false, message: 'Incorrect password' });
+//       }
+
+//       // Generate a token
+//       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+
+//       // Send response with user details and token
+//       return res.json({
+//           success: true,
+//           message: "Login successful",
+//           user: {
+//               firstName: user.firstName,
+//               lastName: user.lastName,
+//               username: user.userName,
+//               email: user.email,
+//               role: user.role,
+//               token
+//           }
+//       });
+
+//   } catch (err) {
+//       console.error(err);
+//       return res.status(500).json({ success: false, message: 'Login failed', error: err.message });
+//   }
+// };
+
+export const login = async (req, res) => {
+    try {
+      const { identifier, password } = req.body; 
+  
+      if (!identifier || !password) {
+        return res.status(400).json({
+          success: false,
+          message: 'Both identifier (email or username) and password are required',
+        });
+      }
+  
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+      const isEmail = emailRegex.test(identifier);
+  
+      const user = await User.findOne(isEmail ? { email: identifier } : { userName: identifier });
+  
+      // If no user is found
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
+        });
+      }
+  
+      // Verify the password
       const isMatch = await comparePassword(password, user.password);
       if (!isMatch) {
-          return res.status(400).json({ success: false, message: 'Incorrect password' });
+        return res.status(400).json({
+          success: false,
+          message: 'Incorrect password',
+        });
       }
-
-      // Generate a token
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "2h" });
-
-      // Send response with user details and token
+  
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  
       return res.json({
-          success: true,
-          message: "Login successful",
-          user: {
-              firstName: user.firstName,
-              lastName: user.lastName,
-              username: user.userName,
-              email: user.email,
-              role: user.role,
-              token
-          }
+        success: true,
+        message: 'Login successful',
+        user: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          username: user.userName,
+          email: user.email,
+          role: user.role,
+          token,
+        },
       });
-
-  } catch (err) {
+    } catch (err) {
       console.error(err);
-      return res.status(500).json({ success: false, message: 'Login failed', error: err.message });
-  }
-};
+      return res.status(500).json({
+        success: false,
+        message: 'Login failed',
+        error: err.message,
+      });
+    }
+  };
+  
 
 
 // forgotPassword

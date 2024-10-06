@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import AuthRouter from "./src/routes/auth.js";
+import PropertyRouter from "./src/routes/property.js";
 import { globalMiddleware } from "./src/middlewares/auth.js";
 import { connectDb } from "./src/config/dbConfig.js";
 import cors from "cors";
@@ -23,9 +24,9 @@ app.use(globalMiddleware)
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Welcome to Homepro Backend API" });
 });
-// Auth Routes
-app.use("/api/auth", AuthRouter); // localhost:8080/api/auth/login
-
+// Routes
+app.use("/api/auth", AuthRouter);
+app.use("/api", PropertyRouter); 
 const port = process.env.PORT || 3000;
 const dbUrl = process.env.MONGODB_URL;
 
