@@ -52,6 +52,10 @@ const PropertySchema = new Schema(
       type: ObjectId,
       ref: "User",
     },
+    agentId: {
+      type: ObjectId,
+      ref: "User",
+    },
     isActive: {
       type: Boolean,
       default: true,

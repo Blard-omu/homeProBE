@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, userName, email, password } = req.body;
-    // console.log(req.body);
+    const { firstName, lastName, userName, email, password, phoneNumber } = req.body;
+    console.log(req.body);
 
     // Handle validation 
     if(!firstName){
@@ -15,7 +15,7 @@ export const register = async (req, res) => {
         return res.status(400).json({ success: false, message: "Last name is required." });
     }
     if(!userName){
-        return res.status(400).json({ success: false, message: "User name is required." });
+        return res.status(400).json({ success: false, message: "Username is required." });
     }
     if(!email){
         return res.status(400).json({ success: false, message: "Email is required." });
@@ -25,6 +25,9 @@ export const register = async (req, res) => {
     }
     if(!password){
         return res.status(400).json({ success: false, message: "Password is required." });
+    }
+    if(!phoneNumber){
+        return res.status(400).json({ success: false, message: "Phone number is required." });
     }
     if(password.length < 6){
         return res.status(400).json({ success: false, message: "Password must be at least 6 characters long." });
@@ -51,6 +54,7 @@ export const register = async (req, res) => {
         lastName,
         userName,
         email,
+        phoneNumber,
         password: hashedPassword,
     })
 
@@ -76,67 +80,20 @@ export const register = async (req, res) => {
 };
 
 
-
-
-
-// export const login = async (req, res) => {
-//   try { 
-//       const { userName, password } = req.body;
-
-//       // Check if username is provided
-//       if (!userName) {
-//           return res.status(404).json({ success: false, message: 'Username is required' });
-//       }
-
-//       // Check if password is provided
-//       if (!password) {
-//           return res.status(404).json({ success: false, message: 'Password is required' });
-//       }
-
-//       // Find user by username
-//       const user = await User.findOne({ userName });
-//       if (!user) {
-//           return res.status(404).json({ success: false, message: 'User not found' });
-//       }
-
-//     //   console.log(user);
-      
-//       const isMatch = await comparePassword(password, user.password);
-//       if (!isMatch) {
-//           return res.status(400).json({ success: false, message: 'Incorrect password' });
-//       }
-
-//       // Generate a token
-//       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-//       // Send response with user details and token
-//       return res.json({
-//           success: true,
-//           message: "Login successful",
-//           user: {
-//               firstName: user.firstName,
-//               lastName: user.lastName,
-//               username: user.userName,
-//               email: user.email,
-//               role: user.role,
-//               token
-//           }
-//       });
-
-//   } catch (err) {
-//       console.error(err);
-//       return res.status(500).json({ success: false, message: 'Login failed', error: err.message });
-//   }
-// };
-
 export const login = async (req, res) => {
     try {
       const { identifier, password } = req.body; 
   
-      if (!identifier || !password) {
+      if (!identifier) {
         return res.status(400).json({
           success: false,
-          message: 'Both identifier (email or username) and password are required',
+          message: 'Email or username  is required',
+        });
+      }
+      if (!password) {
+        return res.status(400).json({
+          success: false,
+          message: 'Password  is required',
         });
       }
   

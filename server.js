@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import AuthRouter from "./src/routes/auth.js";
+import UserRouter from "./src/routes/user.js";
 import PropertyRouter from "./src/routes/property.js";
 import { globalMiddleware } from "./src/middlewares/auth.js";
 import { connectDb } from "./src/config/dbConfig.js";
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", AuthRouter);
 app.use("/api", PropertyRouter); 
+app.use("/api/users", UserRouter); 
 const port = process.env.PORT || 3000;
 const dbUrl = process.env.MONGODB_URL;
 

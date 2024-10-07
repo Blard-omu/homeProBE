@@ -4,7 +4,7 @@ import { cloudinary } from "../config/cloudinaryConfig.js";
 // createProperty
 export const createProperty = async (req, res) => {
   try {
-    const { title, description, price, location } = req.body;
+    const { title, description, price, location, agentId } = req.body;
     const imageFiles = req.files
 
     if (!title) {
@@ -53,6 +53,14 @@ export const createProperty = async (req, res) => {
   // Filter out any failed uploads (optional)
   uploadedImages = uploadedImages.filter(image => !image.error);
 
+  const agent = await User.findById(agentId);
+  if (!agent || !agent.isAgent) {
+      return res.status(400).json({
+          success: false,
+          message: "The selected agent is invalid or is not a registered agent.",
+      });
+  }
+
 
     // create a new property
     const property = new Property({
@@ -61,6 +69,7 @@ export const createProperty = async (req, res) => {
       price,
       location,
       postedBy: req.user.id,
+      agentId: agentId._id,
       images: uploadedImages,
     });
 

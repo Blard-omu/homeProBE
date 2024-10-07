@@ -53,10 +53,12 @@ const UserSchema = new Schema({
         ]
     },
     image: {
-        type: String,
-    },
-    imagePublicId: {
-        type: String,
+        url: {
+          type: String,
+        },
+        imagePublicId: {
+          type: String,
+        },
     },
     address: {
         type: String,
@@ -64,7 +66,11 @@ const UserSchema = new Schema({
     isActive: {
         type: Boolean,
         default: true
-    }
+    },
+    isAgent: {
+        type: Boolean,
+        default: false,
+    },
 }, {timestamps: true});
 
 export default mongoose.model('User', UserSchema);
