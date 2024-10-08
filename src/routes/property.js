@@ -5,7 +5,7 @@ import { upload } from '../config/multer.js';
 
 const router = express.Router();
 
-router.post('/create', authCheck, upload.array("images", 10),  createProperty); // localhost:8080/api/create
+router.post('/property/create', authCheck, upload.array("images", 10),  createProperty); // localhost:8080/api/create
 router.patch('/update/:propertyId', authCheck,  updateProperty); 
 router.get('/properties', getAllProperties); 
 router.get('/property/:propertyId', getPropertyById); 

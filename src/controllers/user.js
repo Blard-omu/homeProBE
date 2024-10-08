@@ -107,7 +107,7 @@ export const getAgentById = async (req, res) => {
 // getAllAgents (already provided)
 export const getAllAgents = async (req, res) => {
     try {
-        const agents = await User.find({ isAgent: true }).select("name email _id phoneNumber");
+        const agents = await User.find({ isAgent: true }).select("userName email _id phoneNumber");
         res.status(200).json({ success: true, agents });
     } catch (err) {
         console.error("Error fetching agents:", err.message);

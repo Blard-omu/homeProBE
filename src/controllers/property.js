@@ -1,32 +1,38 @@
 import Property from "../models/property.js";
+import User from "../models/user.js";
 import { cloudinary } from "../config/cloudinaryConfig.js";
 
 // createProperty
 export const createProperty = async (req, res) => {
   try {
-    const { title, description, price, location, agentId } = req.body;
+    const { title, description, price, state, agentId, address, propertyFeatures, } = req.body;
     const imageFiles = req.files
 
     if (!title) {
       return res
         .status(400)
-        .json({ success: false, message: "title name is required." });
+        .json({ success: false, message: "title is required." });
     }
 
     if (!description) {
       return res
         .status(400)
-        .json({ success: false, message: "description name is required." });
+        .json({ success: false, message: "description is required." });
     }
     if (!price) {
       return res
         .status(400)
-        .json({ success: false, message: "price name is required." });
+        .json({ success: false, message: "price is required." });
     }
-    if (!location) {
+    if (!state) {
       return res
         .status(400)
-        .json({ success: false, message: "location name is required." });
+        .json({ success: false, message: "state is required." });
+    }
+    if (!propertyFeatures) {
+      return res
+        .status(400)
+        .json({ success: false, message: "propertyFeatures is required." });
     }
 
     let uploadedImages = [];
@@ -67,10 +73,12 @@ export const createProperty = async (req, res) => {
       title,
       description,
       price,
-      location,
+      state,
+      address,
       postedBy: req.user.id,
-      agentId: agentId._id,
+      agentId: agentId || null,
       images: uploadedImages,
+      propertyFeatures: propertyFeatures || {},
     });
 
     // save property

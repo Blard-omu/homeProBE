@@ -24,15 +24,15 @@ const PropertySchema = new Schema(
     bathrooms: {
       type: Number,
       default: 3,
-        },
+    },
     sqm: {
       type: Number,
-      default: 3000
+      default: 3000,
     },
     state: {
       type: String,
       default: "LAGOS",
-      enum: ["IBADAN", "ABUJA", "OGUN", "KANO", "Enugu"],
+      enum: ["LAGOS", "IBADAN", "ABUJA", "OGUN", "KANO", "Enugu"],
     },
     address: {
       street: {
@@ -42,29 +42,31 @@ const PropertySchema = new Schema(
       city: {
         type: String,
         required: true,
-      }
+      },
     },
     propertyType: {
       type: String,
       default: "apartment",
       enum: ["apartment", "house", "office", "villa", "land"],
     },
-    propertyFeatures: [
-      {
-        location: {
-          type: String,
-        },
-        area: {
-          type: String,
-        },
-        interior: {
-          type: String,
-        },
-        security: {
-          type: String,
-        },
+    propertyFeatures: {
+      location: {
+        type: String,
       },
-    ],
+      area: {
+        type: String,
+      },
+      interior: {
+        type: String,
+      },
+      security: {
+        type: String,
+      },
+      gated: {
+        type: String,
+        default: "Yes",
+      },
+    },
     images: [
       {
         url: {
