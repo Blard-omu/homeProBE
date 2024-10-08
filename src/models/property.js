@@ -17,6 +17,14 @@ const PropertySchema = new Schema(
       type: Number,
       required: true,
     },
+    year: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
     bedrooms: {
       type: Number,
       default: 3,
@@ -24,19 +32,31 @@ const PropertySchema = new Schema(
     bathrooms: {
       type: Number,
       default: 3,
-        },
+    },
     sqm: {
       type: Number,
-      default: 3000
+      default: 3000,
+    },
+    Address: [
+      {
+        street: {
+          type: String,
+        },
+        city: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+    propertyType: {
+      type: String,
+      default: "Apartment",
+      enum: ["Appartment", "House", "Office", "Villa", "Land"],
     },
     location: {
       type: String,
-      required: true,
-    },
-    propertyType: {
-      type: String,
-      default: "apartment",
-      enum: ["apartment", "house", "office", "villa", "land"],
+      default: "Lagos",
+      enum: ["Lagos, Ogun, Ibadan, Abuja, Porharcourt, Kaduna, Enugu,Others"],
     },
     images: [
       {
@@ -44,6 +64,22 @@ const PropertySchema = new Schema(
           type: String,
         },
         imagePublicId: {
+          type: String,
+        },
+      },
+    ],
+    propertyFeatures: [
+      {
+        location: {
+          type: String,
+        },
+        area: {
+          type: String,
+        },
+        interior: {
+          type: String,
+        },
+        security: {
           type: String,
         },
       },
