@@ -31,7 +31,18 @@ const PropertySchema = new Schema(
     },
     location: {
       type: String,
-      required: true,
+      default: "LAGOS",
+      enum: ["IBADAN", "ABUJA", "OGUN", "KANO", "Enugu"],
+    },
+    address: {
+      street: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      }
     },
     propertyType: {
       type: String,
