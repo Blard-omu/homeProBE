@@ -29,7 +29,7 @@ const PropertySchema = new Schema(
       type: Number,
       default: 3000
     },
-    location: {
+    state: {
       type: String,
       default: "LAGOS",
       enum: ["IBADAN", "ABUJA", "OGUN", "KANO", "Enugu"],
@@ -49,6 +49,22 @@ const PropertySchema = new Schema(
       default: "apartment",
       enum: ["apartment", "house", "office", "villa", "land"],
     },
+    propertyFeatures: [
+      {
+        location: {
+          type: String,
+        },
+        area: {
+          type: String,
+        },
+        interior: {
+          type: String,
+        },
+        security: {
+          type: String,
+        },
+      },
+    ],
     images: [
       {
         url: {
