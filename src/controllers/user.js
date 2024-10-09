@@ -74,7 +74,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
     try {
         const { userId } = req.params;
-        const user = await User.findById(userId).select("name email isAgent _id profilePicture");
+        const user = await User.findById(userId).select('-password');
 
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found." });
@@ -91,7 +91,7 @@ export const getUserById = async (req, res) => {
 export const getAgentById = async (req, res) => {
     try {
         const { agentId } = req.params;
-        const agent = await User.findOne({ _id: agentId, isAgent: true }).select("name email _id phoneNumber");
+        const agent = await User.findOne({ _id: agentId, isAgent: true }).select("name email isAgent _id profilePicture");
 
         if (!agent) {
             return res.status(404).json({ success: false, message: "Agent not found." });

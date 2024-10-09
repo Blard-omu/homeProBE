@@ -165,7 +165,7 @@ export const updateProperty = async (req, res) => {
 
 export const getAllProperties = async (req, res) => {
   try {
-    const { page = 1, limit = 5, ...filters } = req.query;
+    const { page = 1, limit = 6, ...filters } = req.query;
 
     // Build query object from filters
     let query = {};
@@ -221,6 +221,8 @@ export const filterProperties = async (req, res) => {
       location = "",
       minPrice = 0,
       maxPrice = Number.MAX_SAFE_INTEGER,
+      bedrooms = "",
+      propertyType = "",
       page = 1,
       limit = 10,
     } = req.query;
@@ -234,7 +236,17 @@ export const filterProperties = async (req, res) => {
     }
 
     // Price filtering
-    query.price = { $gte: minPrice, $lte: maxPrice }; // Fetch properties within the price range
+    query.price = { $gte: minPrice, $lte: maxPrice };
+
+    // Bedrooms filter (check if it was provided)
+    if (bedrooms) {
+      query.bedrooms = parseInt(bedrooms, 10); // Convert bedrooms to number
+    }
+
+    // Property type filter (case-insensitive)
+    if (propertyType) {
+      query.propertyType = { $regex: new RegExp(propertyType, "i") };
+    }
 
     // Convert page and limit to numbers for pagination
     const pageNum = parseInt(page, 10) || 1;
@@ -260,6 +272,7 @@ export const filterProperties = async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
+
 
 export const deleteProperty = async (req, res) => {
   try {
