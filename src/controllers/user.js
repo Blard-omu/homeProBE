@@ -104,7 +104,7 @@ export const getAgentById = async (req, res) => {
     }
 };
 
-// getAllAgents (already provided)
+// getAllAgents
 export const getAllAgents = async (req, res) => {
     try {
         const agents = await User.find({ isAgent: true }).select("userName email _id phoneNumber");
