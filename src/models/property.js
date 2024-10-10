@@ -17,6 +17,9 @@ const PropertySchema = new Schema(
       type: Number,
       required: true,
     },
+    year: {
+      type: String,
+    },
     bedrooms: {
       type: Number,
       default: 3,
@@ -46,8 +49,8 @@ const PropertySchema = new Schema(
     },
     propertyType: {
       type: String,
-      default: "apartment",
-      enum: ["apartment", "house", "office", "villa", "land"],
+      default: "Apartment",
+      enum: ["Apartment", "House", "Office", "Villa", "Land", "Stuido", "Penthouse", "Duplex","Bungalow","Mansion"],
     },
     propertyFeatures: {
       location: {
@@ -67,6 +70,14 @@ const PropertySchema = new Schema(
         default: "Yes",
       },
     },
+    keyFeatures: [{
+      key: {
+        type: String, 
+      },
+      feature: {
+        type: String,
+      },
+    }],
     images: [
       {
         url: {
